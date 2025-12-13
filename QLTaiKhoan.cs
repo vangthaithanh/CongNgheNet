@@ -275,5 +275,22 @@ namespace DoAnNet
         {
 
         }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnTimKiem_Click_1(object sender, EventArgs e)
+        {
+
+
+        }
+
+        private void QLTaiKhoan_Load(object sender, EventArgs e)
+        {
+            guna2ShadowForm1.SetShadowForm(this);
+            guna2DragControl1.TargetControl = this;
+        }
     }
 }
