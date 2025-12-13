@@ -65,6 +65,12 @@
     <Compile Include="FormDatSan.Designer.cs">
       <DependentUpon>FormDatSan.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormGoiDichVu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormGoiDichVu.Designer.cs">
+      <DependentUpon>FormGoiDichVu.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormSoDoSan.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -83,6 +89,7 @@
     <Compile Include="Loading.Designer.cs">
       <DependentUpon>Loading.cs</DependentUpon>
     </Compile>
+    <Compile Include="obj\Debug\.NETFramework,Version=v4.8.AssemblyAttributes.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QLTaiKhoan.cs">
@@ -104,6 +111,11 @@
     <EmbeddedResource Include="Loading.resx">
       <DependentUpon>Loading.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="obj\Debug\DoAnNet.Form1.resources" />
+    <EmbeddedResource Include="obj\Debug\DoAnNet.Loading.resources" />
+    <EmbeddedResource Include="obj\Debug\DoAnNet.Properties.Resources.resources" />
+    <EmbeddedResource Include="obj\Debug\DoAnNet.QLTaiKhoan.resources" />
+    <EmbeddedResource Include="obj\Debug\DoAnNet.TrangChu.resources" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -120,7 +132,15 @@
     <EmbeddedResource Include="TrangChu.resx">
       <DependentUpon>TrangChu.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="obj\Debug\DesignTimeResolveAssemblyReferences.cache" />
+    <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
+    <None Include="obj\Debug\DoAnNet.csproj.AssemblyReference.cache" />
+    <None Include="obj\Debug\DoAnNet.csproj.CoreCompileInputs.cache" />
+    <None Include="obj\Debug\DoAnNet.csproj.GenerateResource.cache" />
     <None Include="packages.config" />
+    <None Include="packages\Guna.UI2.WinForms.2.0.4.7\.signature.p7s" />
+    <None Include="packages\Guna.UI2.WinForms.2.0.4.7\Guna.UI2.WinForms.2.0.4.7.nupkg" />
+    <None Include="packages\Guna.UI2.WinForms.2.0.4.7\README.md" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -136,6 +156,52 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include=".gitignore" />
+    <Content Include="Anh\background.jpg" />
+    <Content Include="Anh\de47ea9b520ba897d9cdba579883dcd5.jpg" />
+    <Content Include="Anh\logo.jpg" />
+    <Content Include="Anh\logo1.jpg" />
+    <Content Include="Anh\logo2.jpg" />
+    <Content Include="Anh\logout %281%29.png" />
+    <Content Include="Anh\logout.png" />
+    <Content Include="Anh\man-6919_256.gif" />
+    <Content Include="Anh\output-onlinegiftools-com.gif" />
+    <Content Include="Anh\round.png" />
+    <Content Include="Anh\search-interface-symbol.png" />
+    <Content Include="Anh\square.png" />
+    <Content Include="Anh\Untitled.png" />
+    <Content Include="Anh\user %281%29.png" />
+    <Content Include="Anh\user.png" />
+    <Content Include="obj\Debug\DoAnNet.csproj.FileListAbsolute.txt" />
+    <Content Include="obj\Debug\TempPE\Properties.Resources.Designer.cs.dll" />
+    <Content Include="packages\Guna.UI2.WinForms.2.0.4.7\icon.png" />
+    <Content Include="packages\Guna.UI2.WinForms.2.0.4.7\lib\net40\Guna.UI2.dll" />
+    <Content Include="packages\Guna.UI2.WinForms.2.0.4.7\lib\net45\Guna.UI2.dll" />
+    <Content Include="packages\Guna.UI2.WinForms.2.0.4.7\lib\net461\Guna.UI2.dll" />
+    <Content Include="packages\Guna.UI2.WinForms.2.0.4.7\lib\net472\Guna.UI2.dll" />
+    <Content Include="packages\Guna.UI2.WinForms.2.0.4.7\lib\net48\Guna.UI2.dll" />
+    <Content Include="packages\Guna.UI2.WinForms.2.0.4.7\lib\net6.0-windows7.0\Guna.UI2.dll" />
+    <Content Include="packages\Guna.UI2.WinForms.2.0.4.7\lib\net7.0-windows7.0\Guna.UI2.dll" />
+    <Content Include="packages\Guna.UI2.WinForms.2.0.4.7\lib\netcoreapp3.1\Guna.UI2.dll" />
+    <Content Include="packages\Guna.UI2.WinForms.2.0.4.7\LICENSE.txt" />
+    <Content Include="Resources\background.jpg" />
+    <Content Include="Resources\de47ea9b520ba897d9cdba579883dcd5.jpg" />
+    <Content Include="Resources\logo.jpg" />
+    <Content Include="Resources\logo1.jpg" />
+    <Content Include="Resources\logo2.jpg" />
+    <Content Include="Resources\logout %281%29.png" />
+    <Content Include="Resources\logout.png" />
+    <Content Include="Resources\man-6919_256.gif" />
+    <Content Include="Resources\output-onlinegiftools-com.gif" />
+    <Content Include="Resources\round.png" />
+    <Content Include="Resources\search-interface-symbol.png" />
+    <Content Include="Resources\square.png" />
+    <Content Include="Resources\Untitled.png" />
+    <Content Include="Resources\user %281%29.png" />
+    <Content Include="Resources\user.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\Debug\" />
+    <Folder Include="bin\Release\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -289,8 +289,10 @@ namespace DoAnNet
 
         private void QLTaiKhoan_Load(object sender, EventArgs e)
         {
-            guna2ShadowForm1.SetShadowForm(this);
+
+            //guna2ShadowForm1.SetShadowForm(this);
             guna2DragControl1.TargetControl = this;
+            guna2DragControl1.UseTransparentDrag = false;
         }
     }
 }

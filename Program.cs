@@ -16,7 +16,7 @@ namespace DoAnNet
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new QLTaiKhoan());
+            Application.Run(new Form1());
         }
     }
 }
