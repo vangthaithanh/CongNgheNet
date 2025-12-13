@@ -15,7 +15,7 @@ namespace DoAnNet
     public partial class FormDatSan : Form
     {
         private int _maSan;
-        private int _maKH = -1; // ID khách hàng tìm được
+        private int _maKH = -1;
         string strCon = ConfigurationManager.ConnectionStrings["QLSanBongMini"].ConnectionString;
 
         public FormDatSan(int maSan, string tenSan)
@@ -24,20 +24,51 @@ namespace DoAnNet
             _maSan = maSan;
             lblTieuDe.Text = "ĐẶT SÂN - " + tenSan.ToUpper();
 
-            // Set giờ mặc định là hiện tại
-            dtpGioBatDau.Value = DateTime.Now;
+            // 1. Tự động thêm các khung giờ vào ComboBox (06:00 -> 22:30)
+            LoadKhungGio();
 
             // Gắn sự kiện
             txtSDT.TextChanged += TxtSDT_TextChanged;
             btnLuu.Click += BtnLuu_Click;
-            btnHuy.Click += (s, e) => this.Close();
+            btnHuy.Click += (s, e) => QuayVeSoDo();
         }
 
-        // Tự động tìm tên khách khi nhập SĐT
+        private void LoadKhungGio()
+        {
+            cboGioBatDau.Items.Clear();
+            // Tạo giờ từ 6h sáng đến 23h đêm, mỗi nấc 30 phút
+            TimeSpan start = new TimeSpan(6, 0, 0);
+            TimeSpan end = new TimeSpan(23, 0, 0);
+
+            while (start <= end)
+            {
+                // Format hh:mm (ví dụ: 06:00, 06:30)
+                cboGioBatDau.Items.Add(start.ToString(@"hh\:mm"));
+                start = start.Add(new TimeSpan(0, 30, 0));
+            }
+
+            // Mặc định chọn giờ gần nhất với hiện tại
+            cboGioBatDau.SelectedIndex = 0; // Hoặc logic phức tạp hơn nếu muốn
+        }
+
+        private void QuayVeSoDo()
+        {
+            Panel pnl = this.Parent as Panel;
+            if (pnl != null)
+            {
+                FormSoDoSan frm = new FormSoDoSan();
+                frm.TopLevel = false;
+                frm.FormBorderStyle = FormBorderStyle.None;
+                frm.Dock = DockStyle.Fill;
+                pnl.Controls.Clear();
+                pnl.Controls.Add(frm);
+                frm.Show();
+            }
+        }
+
         private void TxtSDT_TextChanged(object sender, EventArgs e)
         {
-            if (txtSDT.Text.Length < 9) return; // Chưa đủ số thì chưa tìm
-
+            if (txtSDT.Text.Length < 9) return;
             try
             {
                 using (SqlConnection con = new SqlConnection(strCon))
@@ -57,7 +88,7 @@ namespace DoAnNet
                             else
                             {
                                 _maKH = -1;
-                                txtTenKH.Text = "Khách mới (Vui lòng thêm KH trước)";
+                                txtTenKH.Text = "Khách mới (Hãy thêm KH trước)";
                             }
                         }
                     }
@@ -68,11 +99,8 @@ namespace DoAnNet
 
         private void BtnLuu_Click(object sender, EventArgs e)
         {
-            if (_maKH == -1)
-            {
-                MessageBox.Show("Chưa tìm thấy khách hàng! Vui lòng kiểm tra lại SĐT.");
-                return;
-            }
+            if (_maKH == -1) { MessageBox.Show("Chưa có thông tin khách!"); return; }
+            if (cboGioBatDau.SelectedItem == null) { MessageBox.Show("Vui lòng chọn giờ!"); return; }
 
             try
             {
@@ -80,22 +108,25 @@ namespace DoAnNet
                 {
                     con.Open();
 
-                    // 1. Thêm vào bảng DatSan
-                    // Giả sử MaNV = 1 (Admin) cho nhanh, sau này bạn thay bằng Session.CurrentUser.MaNV
-                    string sqlInsert = @"
-                        INSERT INTO DatSan (MaKH, MaSan, MaNV, NgayDat, GioBatDau, TrangThai) 
-                        VALUES (@kh, @ms, 1, @ngay, @gio, 'DangDa')";
+                    // 1. GHÉP NGÀY + GIỜ
+                    DateTime ngay = dtpNgayDat.Value.Date; // Lấy phần ngày
+                    TimeSpan gio = TimeSpan.Parse(cboGioBatDau.SelectedItem.ToString()); // Lấy phần giờ từ ComboBox
+
+                    // (Tùy chọn: Nếu muốn lưu chính xác DateTime bắt đầu)
+                    // DateTime thoiGianBatDau = ngay.Add(gio);
+
+                    string sqlInsert = @"INSERT INTO DatSan (MaKH, MaSan, MaNV, NgayDat, GioBatDau, TrangThai) 
+                                         VALUES (@kh, @ms, 1, @ngay, @gio, 'DangDa')";
 
                     using (SqlCommand cmd = new SqlCommand(sqlInsert, con))
                     {
                         cmd.Parameters.AddWithValue("@kh", _maKH);
                         cmd.Parameters.AddWithValue("@ms", _maSan);
-                        cmd.Parameters.AddWithValue("@ngay", DateTime.Now);
-                        cmd.Parameters.AddWithValue("@gio", dtpGioBatDau.Value.TimeOfDay);
+                        cmd.Parameters.AddWithValue("@ngay", ngay); // Lưu ngày
+                        cmd.Parameters.AddWithValue("@gio", gio);   // Lưu giờ
                         cmd.ExecuteNonQuery();
                     }
 
-                    // 2. Cập nhật trạng thái Sân bóng -> DangDa
                     string sqlUpdate = "UPDATE SanBong SET TrangThai = 'DangDa' WHERE MaSan = @ms";
                     using (SqlCommand cmd = new SqlCommand(sqlUpdate, con))
                     {
@@ -103,32 +134,10 @@ namespace DoAnNet
                         cmd.ExecuteNonQuery();
                     }
                 }
-
                 MessageBox.Show("Đặt sân thành công!");
-                this.DialogResult = DialogResult.OK; // Báo cho Form cha biết là OK rồi
                 QuayVeSoDo();
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Lỗi: " + ex.Message);
-            }
-        }
-        private void QuayVeSoDo()
-        {
-            Panel pnlContainer = this.Parent as Panel;
-            if (pnlContainer != null)
-            {
-                // Tạo lại Sơ đồ sân
-                FormSoDoSan frmSoDo = new FormSoDoSan();
-                frmSoDo.TopLevel = false;
-                frmSoDo.FormBorderStyle = FormBorderStyle.None;
-                frmSoDo.Dock = DockStyle.Fill;
-
-                // Xóa Đặt sân đi, hiện lại Sơ đồ
-                pnlContainer.Controls.Clear();
-                pnlContainer.Controls.Add(frmSoDo);
-                frmSoDo.Show();
-            }
+            catch (Exception ex) { MessageBox.Show("Lỗi: " + ex.Message); }
         }
     }
 }
