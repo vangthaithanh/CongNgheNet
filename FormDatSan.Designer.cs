@@ -76,6 +76,9 @@
             this.cboGioBatDau.Name = "cboGioBatDau";
             this.cboGioBatDau.Size = new System.Drawing.Size(450, 36);
             this.cboGioBatDau.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            // --- THÊM 2 DÒNG NÀY ĐỂ KHÔNG BỊ TRÀN MÀN HÌNH ---
+            this.cboGioBatDau.MaxDropDownItems = 8; // Chỉ hiện tối đa 8 dòng
+            this.cboGioBatDau.IntegralHeight = false; // Giúp list gọn gàng hơn
 
             // --- BUTTONS ---
             this.btnLuu.BorderRadius = 15;
