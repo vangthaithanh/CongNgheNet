@@ -227,6 +227,8 @@ namespace DoAnNet
                     cmdSan.ExecuteNonQuery();
                 }
                 MessageBox.Show("Thanh toán thành công!");
+                FormHoaDon frmBill = new FormHoaDon(_maDatSan);
+                frmBill.ShowDialog(); // ShowDialog để bắt buộc xem hóa đơn xong mới đóng
                 QuayVeSoDo();
             }
             catch (Exception ex) { MessageBox.Show("Lỗi thanh toán: " + ex.Message); }
